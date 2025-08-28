@@ -16,7 +16,7 @@ export default function App() {
       case 'about':
         return (
           <section className="bg-secondary min-h-screen flex items-center">
-            <div className="container py-20">
+            <div className="container py-16 md:py-20">
               <About />
             </div>
           </section>
@@ -24,7 +24,7 @@ export default function App() {
       case 'projects':
         return (
           <section className="bg-primary min-h-screen flex items-center">
-            <div className="container py-20">
+            <div className="container py-16 md:py-20">
               <Projects />
             </div>
           </section>
@@ -32,7 +32,7 @@ export default function App() {
       case 'resume':
         return (
           <section className="bg-secondary min-h-screen flex items-center">
-            <div className="container py-20">
+            <div className="container py-16 md:py-20">
               <Resume />
             </div>
           </section>
@@ -40,7 +40,7 @@ export default function App() {
       case 'contact':
         return (
           <section className="bg-primary min-h-screen flex items-center">
-            <div className="container py-20">
+            <div className="container py-16 md:py-20">
               <Contact />
             </div>
           </section>

@@ -22,8 +22,22 @@ body {
   max-width: var(--container); 
   margin-left: auto; 
   margin-right: auto; 
-  padding-left: 2rem; 
-  padding-right: 2rem; 
+  padding-left: 1rem; 
+  padding-right: 1rem; 
+}
+
+@media (min-width: 640px) {
+  .container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
 }
 
 :focus { 
@@ -60,6 +74,13 @@ input:focus, textarea:focus {
   box-shadow: 0 8px 25px rgba(0, 191, 255, 0.15);
 }
 
+@media (max-width: 768px) {
+  input:focus, textarea:focus {
+    transform: none;
+    box-shadow: 0 4px 15px rgba(0, 191, 255, 0.1);
+  }
+}
+
 .skill-card {
   background: linear-gradient(135deg, rgba(46, 46, 46, 0.8) 0%, rgba(15, 15, 35, 0.9) 100%);
   border: 1px solid rgba(0, 191, 255, 0.1);
@@ -70,6 +91,13 @@ input:focus, textarea:focus {
   transform: translateY(-5px);
   border-color: rgba(0, 191, 255, 0.3);
   box-shadow: 0 10px 30px rgba(0, 191, 255, 0.1);
+}
+
+@media (max-width: 768px) {
+  .skill-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 191, 255, 0.1);
+  }
 }
 
 .hero-gradient {
@@ -88,6 +116,13 @@ input:focus, textarea:focus {
               radial-gradient(circle at 70% 80%, rgba(139, 69, 19, 0.1) 0%, transparent 50%);
 }
 
+@media (max-width: 768px) {
+  .hero-gradient::before {
+    background: radial-gradient(circle at 50% 30%, rgba(0, 191, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 50% 70%, rgba(139, 69, 19, 0.05) 0%, transparent 50%);
+  }
+}
+
 .project-card {
   background: linear-gradient(145deg, rgba(46, 46, 46, 0.6) 0%, rgba(15, 15, 35, 0.8) 100%);
   border: 1px solid rgba(0, 191, 255, 0.1);
@@ -98,6 +133,13 @@ input:focus, textarea:focus {
   transform: translateY(-3px);
   border-color: rgba(0, 191, 255, 0.3);
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+  .project-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  }
 }
 
 .btn-primary {
@@ -111,6 +153,13 @@ input:focus, textarea:focus {
   box-shadow: 0 8px 20px rgba(139, 69, 19, 0.3);
 }
 
+@media (max-width: 768px) {
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(139, 69, 19, 0.25);
+  }
+}
+
 .btn-secondary {
   border: 2px solid rgba(0, 191, 255, 0.5);
   transition: all 0.3s ease;
@@ -120,6 +169,12 @@ input:focus, textarea:focus {
   border-color: #00BFFF;
   background: rgba(0, 191, 255, 0.1);
   transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .btn-secondary:hover {
+    transform: translateY(-1px);
+  }
 }
 
 /* Section background classes */
@@ -179,10 +234,49 @@ input:focus, textarea:focus {
 }
 
 /* Responsive adjustments */
+@media (max-width: 640px) {
+  .container {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+}
+
 @media (max-width: 1024px) {
   .container {
     padding-left: 1rem;
     padding-right: 1rem;
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .floating-shape {
+    display: none;
+  }
+  
+  .orbiting-element {
+    display: none;
+  }
+  
+  /* Reduce motion for better mobile performance */
+  .skill-card:hover {
+    transform: none;
+  }
+  
+  .project-card:hover {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .floating-shape,
+  .orbiting-element {
+    animation: none;
+  }
+  
+  * {
+    transition: none !important;
+    animation: none !important;
   }
 }
 
@@ -202,4 +296,35 @@ aside::-webkit-scrollbar-thumb {
 
 aside::-webkit-scrollbar-thumb:hover {
   background: rgba(139, 69, 19, 0.7);
+}
+
+/* Touch optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .skill-card:hover,
+  .project-card:hover,
+  .btn-primary:hover,
+  .btn-secondary:hover {
+    transform: none;
+  }
+}
+
+/* High DPI display optimizations */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .bg-primary::before,
+  .bg-secondary::before,
+  .hero-gradient::before {
+    background-size: 200% 200%;
+  }
+}
+
+/* Very small screens */
+@media (max-width: 320px) {
+  .container {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+  
+  h1, h2, h3 {
+    line-height: 1.2;
+  }
 }

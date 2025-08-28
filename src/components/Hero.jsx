@@ -1,9 +1,41 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 // Import the image using Vite's asset handling
 import profileImage from '../assets/profile.jpg'
 
 export default function Hero() {
+  const [currentTextIndex, setCurrentTextIndex] = useState(0)
+  const [displayText, setDisplayText] = useState('')
+  const [isDeleting, setIsDeleting] = useState(false)
+  
+  const texts = ['Student', 'Frontend Developer', 'Aspiring Full Stack Developer']
+  
+  useEffect(() => {
+    const currentFullText = texts[currentTextIndex]
+    let timeout
+    
+    if (isDeleting) {
+      timeout = setTimeout(() => {
+        setDisplayText(currentFullText.substring(0, displayText.length - 1))
+      }, 50)
+      
+      if (displayText === '') {
+        setIsDeleting(false)
+        setCurrentTextIndex((prev) => (prev + 1) % texts.length)
+      }
+    } else {
+      timeout = setTimeout(() => {
+        setDisplayText(currentFullText.substring(0, displayText.length + 1))
+      }, 100)
+      
+      if (displayText === currentFullText) {
+        setTimeout(() => setIsDeleting(true), 2000)
+      }
+    }
+    
+    return () => clearTimeout(timeout)
+  }, [displayText, isDeleting, currentTextIndex, texts])
+
   return (
     <section id="home" className="min-h-screen flex items-center hero-gradient relative overflow-hidden pt-20 lg:pt-0">
       {/* Advanced floating background elements */}
@@ -151,16 +183,23 @@ export default function Hero() {
             </motion.span>
           </motion.h1>
 
-          <motion.p 
+          <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-base md:text-lg lg:text-xl xl:text-2xl max-w-2xl text-light/80 mb-8 leading-relaxed mx-auto lg:mx-0"
+            className="text-base md:text-lg lg:text-xl xl:text-2xl max-w-2xl text-light/80 mb-8 leading-relaxed mx-auto lg:mx-0 text-center lg:text-left"
           >
-            I build responsive web applications using{' '}
-            <strong className="text-sky font-semibold">React</strong> and modern tools. 
-            I am currently learning Java and Spring Boot.
-          </motion.p>
+            <span className="text-sky font-semibold">
+              {displayText}
+              <motion.span
+                animate={{ opacity: [1, 0, 1] }}
+                transition={{ duration: 0.8, repeat: Infinity }}
+                className="text-coffee"
+              >
+                |
+              </motion.span>
+            </span>
+          </motion.div>
 
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -173,6 +212,13 @@ export default function Hero() {
               className="px-6 lg:px-8 py-3 lg:py-4 rounded-full btn-primary text-white font-semibold text-base lg:text-lg inline-flex items-center justify-center"
               whileHover={{ scale: 1.05, boxShadow: "0 10px 25px rgba(139, 69, 19, 0.3)" }}
               whileTap={{ scale: 0.95 }}
+              onClick={(e) => {
+                e.preventDefault();
+                const projectsSection = document.getElementById('projects');
+                if (projectsSection) {
+                  projectsSection.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
             >
               View My Work
             </motion.a>
@@ -181,6 +227,13 @@ export default function Hero() {
               className="px-6 lg:px-8 py-3 lg:py-4 rounded-full btn-secondary text-light font-semibold text-base lg:text-lg inline-flex items-center justify-center"
               whileHover={{ scale: 1.05, boxShadow: "0 10px 25px rgba(0, 191, 255, 0.2)" }}
               whileTap={{ scale: 0.95 }}
+              onClick={(e) => {
+                e.preventDefault();
+                const contactSection = document.getElementById('contact');
+                if (contactSection) {
+                  contactSection.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
             >
               Contact Me
             </motion.a>

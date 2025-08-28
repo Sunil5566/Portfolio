@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { FaExternalLinkAlt, FaGithub, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa'
 
@@ -26,7 +26,23 @@ const MOCK = [
 export default function Projects() {
   const [filter, setFilter] = useState('All')
   const [showProjects, setShowProjects] = useState(false)
+  const [isLargeScreen, setIsLargeScreen] = useState(false)
   const tags = ['All', 'Website', 'Java']
+
+  // Check screen size and set showProjects accordingly
+  useEffect(() => {
+    const checkScreenSize = () => {
+      const large = window.innerWidth >= 768 // md breakpoint
+      setIsLargeScreen(large)
+      if (large) {
+        setShowProjects(true)
+      }
+    }
+
+    checkScreenSize()
+    window.addEventListener('resize', checkScreenSize)
+    return () => window.removeEventListener('resize', checkScreenSize)
+  }, [])
 
   const filtered = MOCK.filter((p) => 
     filter === 'All' || p.category === filter
@@ -42,51 +58,54 @@ export default function Projects() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          className="text-center mb-8 md:mb-12"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 px-4">
             My <span className="text-coffee">Projects</span>
           </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-coffee to-sky mx-auto mb-8" />
-          <p className="text-lg text-light/80 max-w-2xl mx-auto">
+          <div className="w-16 md:w-24 h-1 bg-gradient-to-r from-coffee to-sky mx-auto mb-6 md:mb-8" />
+          <p className="text-base md:text-lg text-light/80 max-w-2xl mx-auto px-4">
             Here are some of the projects I've worked on.
           </p>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="flex justify-center mb-8"
-        >
-          <motion.button 
-            onClick={() => setShowProjects(!showProjects)}
-            className={`px-8 py-4 rounded-full font-semibold text-lg flex items-center gap-3 relative overflow-hidden ${
-              showProjects 
-                ? 'bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white' 
-                : 'btn-primary text-white'
-            }`}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+        {/* Show button only on mobile screens */}
+        {!isLargeScreen && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="flex justify-center mb-6 md:mb-8 px-4"
           >
-            <motion.div
-              animate={{ rotate: showProjects ? 180 : 0 }}
-              transition={{ duration: 0.3 }}
+            <motion.button 
+              onClick={() => setShowProjects(!showProjects)}
+              className={`px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold text-base md:text-lg flex items-center gap-2 md:gap-3 relative overflow-hidden w-full sm:w-auto justify-center ${
+                showProjects 
+                  ? 'bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white' 
+                  : 'btn-primary text-white'
+              }`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              {showProjects ? <FaEyeSlash /> : <FaEye />}
-            </motion.div>
-            {showProjects ? 'Hide Projects' : 'View Projects'}
-            
-            {/* Button glow effect */}
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-coffee/20 to-sky/20"
-              initial={{ opacity: 0, scale: 0 }}
-              whileHover={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.3 }}
-            />
-          </motion.button>
-        </motion.div>
+              <motion.div
+                animate={{ rotate: showProjects ? 180 : 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                {showProjects ? <FaEyeSlash /> : <FaEye />}
+              </motion.div>
+              {showProjects ? 'Hide Projects' : 'View Projects'}
+              
+              {/* Button glow effect */}
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-coffee/20 to-sky/20"
+                initial={{ opacity: 0, scale: 0 }}
+                whileHover={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.3 }}
+              />
+            </motion.button>
+          </motion.div>
+        )}
 
         <AnimatePresence>
           {showProjects && (
@@ -100,7 +119,7 @@ export default function Projects() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 0.1 }}
-                className="flex justify-center gap-3 mb-8 flex-wrap"
+                className="flex justify-center gap-2 md:gap-3 mb-6 md:mb-8 flex-wrap px-4"
               >
                 {tags.map((tag, index) => (
                   <motion.button 
@@ -109,7 +128,7 @@ export default function Projects() {
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: index * 0.1 }}
-                    className={`px-6 py-3 rounded-full font-medium transition-all relative overflow-hidden ${
+                    className={`px-4 md:px-6 py-2 md:py-3 rounded-full font-medium transition-all relative overflow-hidden text-sm md:text-base ${
                       filter === tag 
                         ? 'bg-coffee text-white shadow-lg shadow-coffee/25' 
                         : 'bg-dark/50 hover:bg-dark/70 text-light border border-sky/20 hover:border-sky/40'
@@ -131,7 +150,7 @@ export default function Projects() {
 
               <motion.div 
                 layout
-                className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto"
+                className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 lg:gap-8 max-w-6xl mx-auto px-4"
               >
                 <AnimatePresence mode="popLayout">
                   {filtered.map((project, index) => (
@@ -147,8 +166,8 @@ export default function Projects() {
                         type: "spring",
                         stiffness: 100
                       }}
-                      whileHover={{ y: -8, rotateX: 2 }}
-                      className="project-card rounded-2xl p-8 group relative overflow-hidden"
+                      whileHover={{ y: -4, rotateX: 1 }}
+                      className={`project-card rounded-xl md:rounded-2xl p-4 md:p-6 lg:p-8 group relative overflow-hidden ${project.borderColor || 'border-sky/10'} border-2`}
                     >
                       {/* Background gradient effect */}
                       <motion.div
@@ -158,9 +177,9 @@ export default function Projects() {
                         transition={{ duration: 0.5 }}
                       />
                       
-                      <div className="flex items-start justify-between mb-4 relative z-10">
+                      <div className="flex items-start justify-between mb-3 md:mb-4 relative z-10">
                         <motion.h3 
-                          className="font-bold text-2xl text-coffee group-hover:text-sky transition-colors"
+                          className="font-bold text-lg md:text-xl lg:text-2xl text-coffee group-hover:text-sky transition-colors relative z-10 pr-4"
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           transition={{ delay: 0.2 }}
@@ -168,7 +187,7 @@ export default function Projects() {
                           {project.title}
                         </motion.h3>
                         <motion.div
-                          className="w-3 h-3 bg-coffee rounded-full relative"
+                          className="w-2 h-2 md:w-3 md:h-3 bg-coffee rounded-full relative flex-shrink-0 mt-1"
                           animate={{ 
                             scale: [1, 1.3, 1],
                             boxShadow: [
@@ -182,7 +201,7 @@ export default function Projects() {
                       </div>
 
                       <motion.p 
-                        className="text-light/80 mb-6 leading-relaxed relative z-10"
+                        className="text-light/80 mb-4 md:mb-6 leading-relaxed relative z-10 text-sm md:text-base"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.3 }}
@@ -191,7 +210,7 @@ export default function Projects() {
                       </motion.p>
 
                       <motion.div 
-                        className="flex items-center gap-2 flex-wrap mb-6 relative z-10"
+                        className="flex items-center gap-2 flex-wrap mb-4 md:mb-6 relative z-10"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.4 }}
@@ -203,7 +222,7 @@ export default function Projects() {
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: 0.4 + techIndex * 0.1 }}
                             whileHover={{ scale: 1.1 }}
-                            className="text-sm bg-gradient-to-r from-coffee/10 to-sky/10 border border-coffee/30 px-3 py-1 rounded-full text-coffee font-medium hover:border-sky/30 hover:text-sky transition-colors"
+                            className="text-xs md:text-sm bg-gradient-to-r from-coffee/10 to-sky/10 border border-coffee/30 px-2 md:px-3 py-1 rounded-full text-coffee font-medium hover:border-sky/30 hover:text-sky transition-colors"
                           >
                             {tech}
                           </motion.span>
@@ -211,7 +230,7 @@ export default function Projects() {
                       </motion.div>
 
                       <motion.div 
-                        className="flex gap-4 relative z-10"
+                        className="flex flex-col sm:flex-row gap-3 md:gap-4 relative z-10"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.5 }}
@@ -221,15 +240,15 @@ export default function Projects() {
                             href={project.live} 
                             target="_blank" 
                             rel="noopener noreferrer"
-                            className="flex items-center gap-2 px-4 py-2 rounded-full border border-sky/30 hover:border-sky hover:bg-sky/10 transition-all text-sm font-medium text-sky"
-                            whileHover={{ scale: 1.05, x: 2 }}
+                            className="flex items-center justify-center gap-2 px-3 md:px-4 py-2 rounded-full border border-sky/30 hover:border-sky hover:bg-sky/10 transition-all text-xs md:text-sm font-medium text-sky"
+                            whileHover={{ scale: 1.05, x: 1 }}
                             whileTap={{ scale: 0.95 }}
                           >
-                            <FaExternalLinkAlt /> Live Demo
+                            <FaExternalLinkAlt className="text-xs" /> Live Demo
                           </motion.a>
                         ) : (
-                          <span className="flex items-center gap-2 px-4 py-2 rounded-full border border-gray-600 opacity-50 cursor-not-allowed text-sm text-gray-400">
-                            <FaExternalLinkAlt /> No Demo
+                          <span className="flex items-center justify-center gap-2 px-3 md:px-4 py-2 rounded-full border border-gray-600 opacity-50 cursor-not-allowed text-xs md:text-sm text-gray-400">
+                            <FaExternalLinkAlt className="text-xs" /> No Demo
                           </span>
                         )}
                         
@@ -238,28 +257,28 @@ export default function Projects() {
                             href={project.github} 
                             target="_blank" 
                             rel="noopener noreferrer"
-                            className="flex items-center gap-2 px-4 py-2 rounded-full btn-primary text-white text-sm font-medium"
-                            whileHover={{ scale: 1.05, x: 2 }}
+                            className="flex items-center justify-center gap-2 px-3 md:px-4 py-2 rounded-full btn-primary text-white text-xs md:text-sm font-medium"
+                            whileHover={{ scale: 1.05, x: 1 }}
                             whileTap={{ scale: 0.95 }}
                           >
-                            <FaGithub /> Source Code
+                            <FaGithub className="text-xs" /> Source Code
                           </motion.a>
                         ) : (
-                          <span className="flex items-center gap-2 px-4 py-2 rounded-full bg-gray-600 text-white opacity-50 cursor-not-allowed text-sm">
-                            <FaLock /> Private
+                          <span className="flex items-center justify-center gap-2 px-3 md:px-4 py-2 rounded-full bg-gray-600 text-white opacity-50 cursor-not-allowed text-xs md:text-sm">
+                            <FaLock className="text-xs" /> Private
                           </span>
                         )}
                       </motion.div>
 
                       {/* Decorative corner elements */}
                       <motion.div
-                        className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-sky/10 to-transparent"
+                        className="absolute top-0 right-0 w-16 md:w-20 h-16 md:h-20 bg-gradient-to-bl from-sky/10 to-transparent"
                         initial={{ opacity: 0, scale: 0 }}
                         whileHover={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.3 }}
                       />
                       <motion.div
-                        className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-coffee/10 to-transparent"
+                        className="absolute bottom-0 left-0 w-12 md:w-16 h-12 md:h-16 bg-gradient-to-tr from-coffee/10 to-transparent"
                         initial={{ opacity: 0, scale: 0 }}
                         whileHover={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.3, delay: 0.1 }}
@@ -272,16 +291,16 @@ export default function Projects() {
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    className="col-span-full text-center py-12"
+                    className="col-span-full text-center py-8 md:py-12 px-4"
                   >
                     <motion.div
-                      className="w-16 h-16 bg-coffee/20 rounded-full mx-auto mb-4 flex items-center justify-center"
+                      className="w-12 md:w-16 h-12 md:h-16 bg-coffee/20 rounded-full mx-auto mb-4 flex items-center justify-center"
                       animate={{ rotate: 360 }}
                       transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
                     >
-                      <FaEyeSlash className="text-coffee text-2xl" />
+                      <FaEyeSlash className="text-coffee text-lg md:text-2xl" />
                     </motion.div>
-                    <p className="text-light/60 text-lg">No projects found for this filter.</p>
+                    <p className="text-light/60 text-base md:text-lg">No projects found for this filter.</p>
                   </motion.div>
                 )}
               </motion.div>
@@ -291,9 +310,9 @@ export default function Projects() {
 
         {/* Background decorative elements */}
         <motion.div
-          className="absolute top-10 right-10 w-2 h-2 bg-sky rounded-full"
+          className="absolute top-6 md:top-10 right-6 md:right-10 w-1.5 md:w-2 h-1.5 md:h-2 bg-sky rounded-full"
           animate={{
-            y: [0, -20, 0],
+            y: [0, -15, 0],
             opacity: [0.3, 1, 0.3]
           }}
           transition={{
@@ -303,10 +322,10 @@ export default function Projects() {
           }}
         />
         <motion.div
-          className="absolute bottom-10 left-10 w-3 h-3 bg-coffee/60 rounded-full"
+          className="absolute bottom-6 md:bottom-10 left-6 md:left-10 w-2 md:w-3 h-2 md:h-3 bg-coffee/60 rounded-full"
           animate={{
-            y: [0, -15, 0],
-            x: [0, 10, 0],
+            y: [0, -10, 0],
+            x: [0, 8, 0],
             opacity: [0.4, 0.8, 0.4]
           }}
           transition={{
