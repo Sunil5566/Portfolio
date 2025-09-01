@@ -1,6 +1,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
-import { FaHtml5, FaCss3Alt, FaBootstrap, FaReact, FaJsSquare, FaJava, FaDatabase, FaGithub } from 'react-icons/fa'
+import { FaHtml5, FaCss3Alt, FaBootstrap, FaReact, FaJsSquare, FaJava, FaDatabase, FaGithub, FaPython } from 'react-icons/fa'
 import { SiC, SiTailwindcss, SiSpringboot } from 'react-icons/si'
 
 const skills = [
@@ -51,6 +51,12 @@ const skills = [
     icon: <FaJava className="text-2xl md:text-3xl lg:text-4xl" />, 
     color: 'from-red-500 to-orange-600',
     borderColor: 'border-red-500/30'
+  },
+  {
+    name: 'Python',
+    icon: <FaPython className="text-2xl md:text-3xl lg:text-4xl" />,
+    color: 'from-yellow-400 to-yellow-500',
+    borderColor: 'border-yellow-500/30'
   },
   {
     name: 'Spring Boot',

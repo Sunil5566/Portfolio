@@ -8,8 +8,8 @@ const MOCK = [
     title: 'Portfolio',
     desc: 'Personal portfolio built with React and Tailwind CSS with responsive design.',
     tech: ['React', 'Tailwind'],
-    github: null,
-    live: null,
+    github: 'https://github.com/Sunil5566/Portfolio',
+    live: 'https://www.sunilbhattarai556.com.np',
     category: 'Website'
   },
   {

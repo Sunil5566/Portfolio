@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
 // Import the image using Vite's asset handling
 import profileImage from '../assets/profile.jpg'
 
-export default function Hero() {
+export default function Hero({ setActiveSection }) {
   const [currentTextIndex, setCurrentTextIndex] = useState(0)
   const [displayText, setDisplayText] = useState('')
   const [isDeleting, setIsDeleting] = useState(false)
@@ -207,36 +208,26 @@ export default function Hero() {
             transition={{ duration: 0.8, delay: 0.6 }}
             className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
           >
-            <motion.a 
-              href="#projects" 
+            <motion.button
+              type="button"
               className="px-6 lg:px-8 py-3 lg:py-4 rounded-full btn-primary text-white font-semibold text-base lg:text-lg inline-flex items-center justify-center"
               whileHover={{ scale: 1.05, boxShadow: "0 10px 25px rgba(139, 69, 19, 0.3)" }}
               whileTap={{ scale: 0.95 }}
-              onClick={(e) => {
-                e.preventDefault();
-                const projectsSection = document.getElementById('projects');
-                if (projectsSection) {
-                  projectsSection.scrollIntoView({ behavior: 'smooth' });
-                }
-              }}
+              onClick={() => setActiveSection && setActiveSection('projects')}
+              style={{ display: 'inline-block' }}
             >
               View My Work
-            </motion.a>
-            <motion.a 
-              href="#contact" 
+            </motion.button>
+            <motion.button
+              type="button"
               className="px-6 lg:px-8 py-3 lg:py-4 rounded-full btn-secondary text-light font-semibold text-base lg:text-lg inline-flex items-center justify-center"
               whileHover={{ scale: 1.05, boxShadow: "0 10px 25px rgba(0, 191, 255, 0.2)" }}
               whileTap={{ scale: 0.95 }}
-              onClick={(e) => {
-                e.preventDefault();
-                const contactSection = document.getElementById('contact');
-                if (contactSection) {
-                  contactSection.scrollIntoView({ behavior: 'smooth' });
-                }
-              }}
+              onClick={() => setActiveSection && setActiveSection('contact')}
+              style={{ display: 'inline-block' }}
             >
               Contact Me
-            </motion.a>
+            </motion.button>
           </motion.div>
         </motion.div>
 

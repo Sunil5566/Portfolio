@@ -12,7 +12,7 @@ export default function App() {
   const renderContent = () => {
     switch(activeSection) {
       case 'home':
-        return <Hero />
+        return <Hero setActiveSection={setActiveSection} />
       case 'about':
         return (
           <section className="bg-secondary min-h-screen flex items-center">
@@ -46,7 +46,7 @@ export default function App() {
           </section>
         )
       default:
-        return <Hero />
+        return <Hero setActiveSection={setActiveSection} />
     }
   }
 
