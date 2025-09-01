@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Link } from 'react-router-dom'
 // Import the image using Vite's asset handling
 import profileImage from '../assets/profile.jpg'
 

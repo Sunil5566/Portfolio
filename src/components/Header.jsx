@@ -19,7 +19,7 @@ const socialLinks = [
   { name: 'Facebook', url: 'https://www.facebook.com/sunil.bhattarai.12576', icon: <FaFacebook />, color: 'hover:text-sky' }
 ]
 
-export default function Header({ activeSection, setActiveSection }) {
+export default function Header({ activeSection, setActiveSection, isTransitioning }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
@@ -32,7 +32,7 @@ export default function Header({ activeSection, setActiveSection }) {
         className="hidden lg:flex fixed left-0 top-0 w-80 h-screen bg-gradient-to-b from-darker to-navy border-r border-sky/20 flex-col z-50 overflow-y-auto"
       >
         <div className="p-8 text-center border-b border-sky/10">
-          <h1 className="text-xl font-bold text-coffee mb-1">Sunil Bhattarai</h1>
+          <h1 className="text-xl font-bold text-coffee mb-1">sunilbhattarai556.com.np</h1>
         </div>
 
         {/* Navigation */}
@@ -42,17 +42,29 @@ export default function Header({ activeSection, setActiveSection }) {
               <motion.button
                 key={nav.id}
                 onClick={() => setActiveSection(nav.id)}
+                disabled={isTransitioning}
                 className={`w-full flex items-center gap-4 p-4 rounded-xl font-medium transition-all relative overflow-hidden group ${
                   activeSection === nav.id 
                     ? 'bg-gradient-to-r from-coffee/20 to-sky/20 text-coffee border border-coffee/30' 
                     : 'text-light/70 hover:text-light hover:bg-dark/30'
-                }`}
+                } ${isTransitioning ? 'opacity-50 cursor-not-allowed' : ''}`}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.1 + 0.6 }}
+                whileHover={!isTransitioning ? { scale: 1.02 } : {}}
+                whileTap={!isTransitioning ? { scale: 0.98 } : {}}
               >
                 <span className="text-xl">{nav.icon}</span>
                 <span>{nav.label}</span>
+                
+                {/* Loading indicator for active button during transition */}
+                {isTransitioning && activeSection === nav.id && (
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-coffee/10 to-sky/10"
+                    animate={{ opacity: [0.3, 0.7, 0.3] }}
+                    transition={{ duration: 0.8, repeat: Infinity }}
+                  />
+                )}
               </motion.button>
             ))}
           </div>
@@ -83,7 +95,7 @@ export default function Header({ activeSection, setActiveSection }) {
 
       {/* Mobile Top Bar */}
       <div className="lg:hidden fixed top-0 left-0 w-full bg-darker/90 backdrop-blur-md border-b border-sky/20 flex items-center justify-between px-4 py-3 z-50">
-        <h1 className="text-lg font-bold text-coffee">Sunil Bhattarai</h1>
+        <h1 className="text-lg font-bold text-coffee">sunilbhattarai556.com.np</h1>
         <button onClick={() => setMobileMenuOpen(true)} className="text-light text-2xl">
           <FaBars />
         </button>
@@ -116,6 +128,7 @@ export default function Header({ activeSection, setActiveSection }) {
                     setActiveSection(nav.id)
                     setMobileMenuOpen(false)
                   }}
+                  disabled={isTransitioning}
                   initial={{ x: 30, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ delay: i * 0.1 }}
@@ -123,7 +136,9 @@ export default function Header({ activeSection, setActiveSection }) {
                     activeSection === nav.id
                       ? "bg-coffee/20 text-coffee"
                       : "text-light/70 hover:text-light hover:bg-dark/40"
-                  }`}
+                  } ${isTransitioning ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  whileHover={!isTransitioning ? { scale: 1.02 } : {}}
+                  whileTap={!isTransitioning ? { scale: 0.98 } : {}}
                 >
                   <span className="text-xl">{nav.icon}</span>
                   {nav.label}
