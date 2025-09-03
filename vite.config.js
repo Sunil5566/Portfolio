@@ -3,20 +3,8 @@ import react from '@vitejs/plugin-react-swc'
 
 export default defineConfig({
   plugins: [react()],
-  base: "/Portfolio/", // This should match your repository name exactly
+  base: "/",  // Changed from "/Portfolio/" to "/" for custom domain
   resolve: {
     extensions: ['.js', '.jsx'],
   },
-  build: {
-    outDir: 'dist',
-    assetsDir: 'assets',
-    rollupOptions: {
-      output: {
-        assetFileNames: 'assets/[name]-[hash][extname]',
-        chunkFileNames: 'assets/[name]-[hash].js',
-        entryFileNames: 'assets/[name]-[hash].js'
-      }
-    }
-  },
-  publicDir: 'public'
-})
+});
